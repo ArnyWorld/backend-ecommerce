@@ -9,3 +9,11 @@ class MySQLProductRepository {
     );
     return { id: result.insertId, ...product };
   }
+ 
+  async getAll() {
+    const [rows] = await pool.execute('SELECT * FROM products');
+    return rows;
+  }
+}
+ 
+module.exports = MySQLProductRepository;
