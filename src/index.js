@@ -3,6 +3,8 @@ const config = require('./config');
 const MongoProductRepository = require('./infraestructure/repositories/MongoProductRepository');
 const ProductController = require('./adapters/controllers/ProductController');
 const productRoutes = require('./adapters/routes/productRoutes');
+const orderRoutes = require('./adapters/routes/OrderRoute');
+const cartRoutes = require('./adapters/routes/CartRoute');
 const { verifyToken } = require('./adapters/middlewares/authJwt');
 
 const app = express();
@@ -26,6 +28,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Routes
 app.use('/api/v1/products', verifyToken, productRoutes(productController));
+app.use('/api/v1/orders', verifyToken, orderRoutes(orderRoutes));
+app.use('/api/v1/carts', verifyToken, cartRoutes(cartRoutes));
 
 // Error Handling
 app.use((err, req, res, next) => {
