@@ -1,11 +1,11 @@
-const CreateProduct = require('../../application/useCases/CreateProduct');
-const ProductDTO = require('../../application/dtos/ProductDTO');
- 
+const CreateProduct = require("../../application/useCases/CreateProduct");
+const ProductDTO = require("../../application/dtos/ProductDTO");
+
 class ProductController {
   constructor(productRepository) {
     this.createProduct = new CreateProduct(productRepository);
   }
- 
+
   async create(req, res) {
     try {
       const product = await this.createProduct.execute(req.body);
@@ -19,10 +19,9 @@ class ProductController {
       const products = await this.productRepository.getAll();
       res.status(200).json(products);
     } catch (err) {
-      res.status(500).json({ message: 'Error retrieving products' });
+      res.status(500).json({ message: "Error retrieving products" });
     }
   }
- 
 }
- 
+
 module.exports = ProductController;

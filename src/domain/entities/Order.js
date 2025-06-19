@@ -1,8 +1,8 @@
 class Order {
-  constructor({ user, address, products, count, total, state, date }) {
-    this.user = user;
+  constructor({ userId, address, productId, count, total, state, date }) {
+    this.userId = userId;
     this.address = address;
-    this.products = products;
+    this.productId = productId;
     this.count = count;
     this.total = total;
     this.state = state;

@@ -1,9 +1,71 @@
-const express = require('express');
+const express = require("express");
+const { verifyToken } = require("../middlewares/authJwt");
+const { requireRole } = require("../middlewares/roleMiddleware");
 const router = express.Router();
- 
+
 module.exports = (productController) => {
-  router.post('/', (req, res) => productController.create(req, res));
-  router.get('/', (req, res) => productController.getAll(req, res));
-  router.get('/:idProduct', (req, res) => productController.getAll(req, res));
+  /**
+   * @swagger
+   * tags:
+   *   name: Products
+   *   description: Gestión de productos
+   */
+
+  /**
+   * @swagger
+   * /api/v1/products:
+   *   get:
+   *     summary: Obtiene todos los productos
+   *     tags: [Products]
+   *     security:
+   *       - BearerAuth: []
+   *     responses:
+   *       200:
+   *         description: Lista de productos
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: array
+   *               items:
+   *                 $ref: '#/components/schemas/Product'
+   *       401:
+   *         description: No autorizado
+   *       500:
+   *         description: Error del servidor
+   */
+
+  router.get("/", (req, res) => productController.getAll(req, res));
+
+  /**
+   * @swagger
+   * /api/v1/products:
+   *   post:
+   *     summary: Crea un nuevo producto
+   *     tags: [Products]
+   *     security:
+   *       - BearerAuth: []
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/Product'
+   *     responses:
+   *       201:
+   *         description: Producto creado exitosamente
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Product'
+   *       400:
+   *         description: Datos de producto inválidos
+   *       401:
+   *         description: No autorizado
+   */
+
+  router.post("/", verifyToken, requireRole("admin"), (req, res) =>
+    productController.create(req, res)
+  );
+
   return router;
 };

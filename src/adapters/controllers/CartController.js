@@ -1,11 +1,11 @@
-const CreateCart = require('../../application/useCases/CreateCart');
-const CartDTO = require('../../application/dtos/CartDTO');
- 
+const CreateCart = require("../../application/useCases/CreateCart");
+const CartDTO = require("../../application/dtos/CartDTO");
+
 class CartController {
   constructor(cartRepository) {
     this.createCart = new CreateCart(cartRepository);
   }
- 
+
   async create(req, res) {
     try {
       const cart = await this.createCart.execute(req.body);
@@ -19,10 +19,9 @@ class CartController {
       const carts = await this.cartRepository.getAll();
       res.status(200).json(carts);
     } catch (err) {
-      res.status(500).json({ message: 'Error retrieving carts' });
+      res.status(500).json({ message: "Error retrieving carts" });
     }
   }
- 
 }
- 
+
 module.exports = CartController;
